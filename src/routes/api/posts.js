@@ -1,25 +1,43 @@
 import { Router } from 'express'
+import * as postServices from '../../services/posts'
 
 const router = Router()
 
-router.get('/posts', (req, res) => {
-    res.json({ todo: 'Get all posts' })
+// Get all posts
+
+router.get('/posts', async (req, res) => res.send(await postServices.getAll()))
+
+// Get single post by ID
+
+router.get('/posts/:id', async (req, res) => {
+  const post = await postServices.getById(req.params.id)
+  post ? res.send(post) : res.status(404).end()
 })
 
-router.get('/posts/:id', (req, res) => {
-    res.json({ todo: `Get one post with ID: ${req.params.id}` })
+// Create a post
+
+router.post('/posts', async (req, res) => {
+  req.body.post
+    ? res.send(await postServices.add(req.body.post))
+    : res.status(400).send({ msg: '💩 Bad Request' })
 })
 
-router.post('/posts', (req, res) => {
-    res.json({ todo: 'Add one post' })
+// Update a post by ID
+
+router.put('/posts/:id', async (req, res) => {
+  const post = await postServices.getById(req.params.id)
+  req.body.post && post
+    ? res.send(await postServices.update(req.body.post, req.params.id))
+    : res.status(400).send({ msg: '💩 Bad Request' })
 })
 
-router.put('/posts/:id', (req, res) => {
-    res.json({ todo: `Update post with ID: ${req.params.id}` })
-})
+// Delete post by ID
 
-router.delete('/posts/:id', (req, res) => {
-    res.json({ todo: `Delete post with ID: ${req.params.id}` })
+router.delete('/posts/:id', async (req, res) => {
+  const post = await postServices.getById(req.params.id)
+  post
+    ? res.send(await postServices.remove(req.params.id))
+    : res.status(404).end()
 })
 
 export default router
