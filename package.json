@@ -1,0 +1,27 @@
+{
+  "name": "blog-api",
+  "description": "NodeJS Blog API",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "author": "adamcuffe28@icloud.com",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "babel src --out-dir dist --delete-dir-on-start --source-maps inline --copy-files",
+    "dev": "nodemon src --exec babel-node | pino-pretty"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "pino-pretty": "^4.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-pino-logger": "^4.0.0",
+    "helmet": "^3.22.0"
+  }
+}
